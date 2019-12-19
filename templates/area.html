@@ -1,0 +1,64 @@
+{% extends "template.html" %}
+{% block scripts %}
+    <script>
+        function toChanges(btn, inp) {
+            if (document.getElementById(btn).innerHTML == "修改") {
+                document.getElementById(btn).innerHTML = "放弃修改";
+            } else {
+                document.getElementById(btn).innerHTML = "修改";
+                document.getElementById(inp).value = {{ area.gasprice }};
+            }
+            if (document.getElementById(inp).disabled != "")
+                document.getElementById(inp).disabled = "";
+            else
+                document.getElementById(inp).disabled = "disabled";
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    <h2 style="text-align: center;">{{ area.name }}地区天然气气费</h2>
+    <table class="table table-striped">
+        <caption>用户信息</caption>
+        <thead>
+        <tr>
+            <td>地区名</td>
+            <td>气费</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <form action="/area/change" method="post">
+            <tr style="display: none;">
+                <td>
+                    <input name="id" type="text" value="{{ area.id }}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ area.name }}</td>
+                <td><input id="gasprice" type="text" name="gasprice"
+                           class="input-medium search-query"
+                           disabled value="{{ area.gasprice }}"/></td>
+                <td>
+                    <button type="button" class="btn btn-info"
+                            onclick="toChanges('btn_name','gasprice');">
+                        <text id="btn_name">修改</text>
+                    </button>
+                    {% if area.is_used == '1' %}
+                        <button type="button" class="btn btn-danger"
+                                onclick="location.href='/area/stop?page=one&is_used=0&area_id='+{{ area.id }}">
+                            暂停服务
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-info"
+                                onclick="location.href='/area/stop?page=one&is_used=1&area_id='+{{ area.id }}">
+                            启动服务
+                        </button>
+                    {% endif %}
+                    <input type="submit" class="btn btn-info" value="提交"/>
+                </td>
+            </tr>
+        </form>
+        </tbody>
+
+    </table>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "template.html" %}
+{% block scripts %}
+    <script>
+        window.onload = function () {
+            var code = {{ backCode }};
+            if (code) {
+                $('#myModal').modal('show');
+            }
+        };
+
+        function tellHim(idName) {
+            var obj = document.getElementById(idName);
+            console.log(idName);
+            obj.innerHTML = "已通知";
+            obj.disabled = "disabled";
+            $('#myModal2').modal('show');
+        }
+
+        function delete_someone(userid) {
+            let xhttp;
+            if (window.XMLHttpRequest) {
+                xhttp = new XMLHttpRequest();
+            } else {
+                // code for IE6, IE5
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert("id = " + userid + " 删除成功!");
+                }
+            };
+            xhttp.open("GET", "/user/delete?id=" + userid, true);
+            xhttp.send();
+        }
+    </script>
+{% endblock %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        提示
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <h3 style="text-align: center;">共查到有<b> {{ backCode }} </b>位用户待缴费</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        提示
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <h3 style="text-align: center;">通知完成！</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <h2 style="text-align: center;">待缴费用户管理</h2>
+    <div class="jumbotron">
+        <h1>Hello, Manager!</h1>
+        <p>practice makes perfect...</p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th style="text-align: center;">姓名</th>
+            <th style="text-align: center;">联系方式</th>
+            <th style="text-align: center;">欠费</th>
+            <th style="text-align: center;">操作</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td style="text-align: center;">{{ user[0].name }}</td>
+                <td style="text-align: center;">{{ user[0].telephone }}</td>
+                <td style="text-align: center;">{{ user[1] }}</td>
+                <td style="text-align: center;">
+                    <button id="btn{{ user[0].id }}" type="button" onclick="tellHim('btn' + '{{ user[0].id }}')"
+                            class="btn btn-info">通知用户
+                    </button>
+                    <button type="button" onclick="location.href = '/user/delete?id={{ user[0].id }}'"
+                            class="btn btn-danger">删除用户
+                    </button>
+                    <button type="button" onclick="location.href = '/user/information?id={{ user[0].id }}'"
+                            class="btn btn-primary">更多操作
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

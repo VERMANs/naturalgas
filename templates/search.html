@@ -1,0 +1,12 @@
+{% extends "template.html" %}
+{% block content %}
+    <form class="form-inline pull-right" style="padding-top:10px;" role="search" action="/search/result"
+          method="get" target="_blank">
+        <div class="form-group">
+            <input name="KeyWord" class="form-control mr-sm-2" type="text" placeholder="全站搜索">
+        </div>
+        <button class="btn my-2 my-sm-0" type="submit"
+                style="background:none; margin-left:-3rem; color:#ff9d00;">
+            <i class="fa fa-search"></i></button>
+    </form>
+{% endblock %}

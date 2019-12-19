@@ -1,0 +1,46 @@
+{% extends "template.html" %}
+{% block scripts %}
+    <script src="{{ url_for('static',filename = 'js/echarts.min.js') }}"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var myChart = echarts.init(document.getElementById('main'));
+            $.ajax({
+                url: '/menu/echart/area',
+                success: function (data) {
+                    json_data = JSON.parse(data)
+                    console.info(json_data['language'])
+                    console.info(json_data['value'])
+                    // 指定图表的配置项和数据
+                    var option = {
+                        title: {
+                            text: '学习语言人数统计'
+                        },
+                        tooltip: {},
+                        legend: {
+                            data: ['销量']
+                        },
+                        xAxis: {
+                            data: json_data['language']
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '销量',
+                            type: 'bar',
+                            data: json_data['value']
+                        }]
+                    };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                }
+            })
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    <h1>柱状图</h1>
+    <div>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="main" style="width: 600px;height:400px;"></div>
+
+    </div>
+{% endblock %}

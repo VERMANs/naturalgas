@@ -1,0 +1,99 @@
+{% extends "template.html" %}
+{% block scripts %}
+    <script>
+        function onTop() {
+            $('#myModal').modal('show');
+        }
+
+        window.onload = function () {
+            var code = "{{ Delete }}";
+            if (code) {
+                $('#myModal').modal('show');
+            }
+        };
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        提示
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    {% if Delete %}
+                        <h3 style="text-align: center;">删除成功!</h3>
+                    {% else %}
+                        <form role="form" action="/menu/manager/add" method="post">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="name">用户名</label>
+                                    <input type="text" name="name" class="form-control" placeholder="请输入用户名">
+                                    <label for="name">密码</label>
+                                    <input type="text" name="password" class="form-control" placeholder="请输入密码">
+                                    <label for="name">所属区域</label>
+                                    <input type="text" name="area" list="areas" class="form-control"
+                                           placeholder="请输入所属区域">
+                                    <datalist id="areas">
+                                        {% for area in areas %}
+                                            <option>{{ area.name }}</option>
+                                        {% endfor %}
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary">
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <h2 style="text-align: center;">各地区管理员管理</h2>
+    <div class="jumbotron">
+        <h1>Hello, Manager!</h1>
+        <p>practice makes perfect...</p>
+        <p><a class="btn btn-primary btn-lg" onclick="onTop()" role="button">Learn more</a></p>
+    </div>
+    <table class="table table-bordered">
+        <th style="text-align: center;">序号</th>
+        <th style="text-align: center;">用户名</th>
+        <th style="text-align: center;">管理区域</th>
+        <th style="text-align: center;">操作</th>
+        </tr>
+        {% for manager in managers %}
+            <tr>
+                <td style="text-align: center;">{{ manager[0] }}</td>
+                <td style="text-align: center;">{{ manager[1] }}</td>
+                <td style="text-align: center;">{{ manager[2] }}</td>
+                <td style="text-align: center;">
+                    {% if manager[3] == 1 %}
+                        <button type="button"
+                                onclick="location.href='/menu/manager/cancel?id={{ manager[0] }}&type={{ manager[3] }}'"
+                                class="btn btn-danger">停用
+                        </button>
+                    {% else %}
+                        <button type="button"
+                                onclick="location.href='/menu/manager/cancel?id={{ manager[0] }}&type={{ manager[3] }}'"
+                                class="btn btn-info">启用
+                        </button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h3 style="text-align: center;">
+        <button type="button" onclick="onTop()" class="btn btn-primary">新增</button>
+    </h3>
+{% endblock %}

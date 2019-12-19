@@ -1,0 +1,80 @@
+{% extends "template.html" %}
+{% block scripts %}
+    <script type="text/javascript">
+        window.onload = function () {
+
+        };
+
+        function toChanges(btn, inp) {
+            if (document.getElementById(btn).innerHTML == "修改")
+                document.getElementById(btn).innerHTML = "放弃修改";
+            else
+                document.getElementById(btn).innerHTML = "修改";
+            if (document.getElementById(inp).disabled != "")
+                document.getElementById(inp).disabled = "";
+            else
+                document.getElementById(inp).disabled = "disabled";
+        }
+
+        function getTelephoneNumber() {
+            var name = document.getElementById('name').value;
+            console.log('name= ' + name);
+            let xhttp;
+            if (window.XMLHttpRequest) {
+                xhttp = new XMLHttpRequest();
+            } else {
+                // code for IE6, IE5
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('telephoneNumber').value = xhttp.response;
+                }
+            };
+            xhttp.open("GET", "/user/getNumber?name=" + name, true);
+            xhttp.send();
+        }
+    </script>
+{% endblock %}
+{% block toast %}
+
+{% endblock %}
+{% block content %}
+    <h2 style="text-align: center;">新增用户账单</h2>
+    <div style="padding:auto;">
+        <form action="/menu/add/dosage/form" method="post" style="text-align: center;">
+            <table class="table table-striped">
+                <caption>用户信息</caption>
+                <thead>
+                </thead>
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td>户主姓名:<input id="name" name="name" onclick="getTelephoneNumber()" type="text" list="names"/>
+                        <datalist id="names">
+                            {% for username in usernames %}
+                                <option>{{ username }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>联系方式:<input id="telephoneNumber" name="telephone" type="text"/></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>气表数值:<input name="gas_used" type="text"/></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="提交修改" class="btn btn-primary"></td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "template.html" %}
+{% block scripts %}
+    <script>
+        window.onload = function () {
+            var backCode = {{ backCode }};
+            if (backCode == 200) {
+                $('#myModal').modal('show');
+            }
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        提示
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    {% if backCode == 200 %}
+                        <h3 style="text-align: center;">信息添加成功!</h3>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <h2 style="text-align: center;">功能界面</h2>
+
+    <button type="button" class="btn btn-info btn-lg"
+            style="margin-bottom:20px;margin-top:10px;margin-left:100px;width: 200px;height: 200px;"
+            onclick="location.href='/menu/echart/area'">地区气费图表
+    </button>
+
+    <button type="button" class="btn btn-info btn-lg"
+            style="margin-bottom:20px;margin-top:10px;margin-left:100px;width: 200px;height: 200px;"
+            onclick="location.href='/menu/echart/arrears'">欠费占比图表
+    </button>
+    <button type="button" class="btn btn-info btn-lg"
+            style="margin-bottom:20px;margin-top:10px;margin-left:100px;width: 200px;height: 200px;"
+            onclick="location.href='/menu/ChangeDosage'">刷新账单
+    </button>
+    <br>
+    <button type="button" class="btn btn-info btn-lg"
+            style="margin-bottom:20px;margin-top:10px;margin-left:100px;width: 200px;height: 200px;"
+            onclick="location.href='/menu/add/dosage'">增添用户账单信息
+    </button>
+    {% if part == 1 %}
+        <button type="button" class="btn btn-info btn-lg"
+                style="margin-bottom:20px;margin-top:10px;margin-left:100px;width: 200px;height: 200px;"
+                onclick="location.href='/menu/manager'">管理员管理
+        </button>
+    {% endif %}
+
+{% endblock %}

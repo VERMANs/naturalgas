@@ -1,0 +1,116 @@
+{% extends "template.html" %}
+{% block scripts %}
+    <script type="text/javascript">
+        function toChanges(btn, inp) {
+            if (document.getElementById(btn).innerHTML == "修改")
+                document.getElementById(btn).innerHTML = "放弃修改";
+            else
+                document.getElementById(btn).innerHTML = "修改";
+            if (document.getElementById(inp).disabled != "")
+                document.getElementById(inp).disabled = "";
+            else
+                document.getElementById(inp).disabled = "disabled";
+        }
+    </script>
+{% endblock %}
+{% block toast %}
+
+{% endblock %}
+{% block content %}
+    <h2 style="text-align: center;">个人用户管理</h2>
+    <div style="padding:auto;">
+        <form action="/user/update" method="post" style="text-align: center;">
+            <table class="table table-striped">
+                <caption>用户信息</caption>
+                <thead>
+                <tr>
+                    <td>#</td>
+                    <td>值</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr style="display: none;">
+                    <td>
+                        <input name="id" type="text" value="{{ id }}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>姓名:</td>
+                    <td><input id="name" type="text" name="name"
+                               class="input-medium search-query"
+                               disabled value="{{ name }}"></td>
+                    <td>
+                        <button type="button" class="btn btn-info"
+                                onclick="toChanges('btn_name','name');">
+                            <text id="btn_name">修改</text>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>联系方式:</td>
+                    <td><input id="user_telephone" type="text" name="telephone" class="input-medium search-query"
+                               disabled value="{{ telephone }}"></td>
+                    <td>
+                        <button type="button" class="btn btn-info"
+                                onclick="toChanges('btn_telephone','user_telephone');">
+                            <text id="btn_telephone">修改</text>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>地区:</td>
+                    <td><input id="user_area" type="text" name="area" class="input-medium search-query"
+                               disabled value="{{ area }}"></td>
+                    <td>
+                        <button type="button" class="btn btn-info"
+                                onclick="toChanges('btn_area','user_area');">
+                            <text id="btn_area">修改</text>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>余额:</td>
+                    <td><input id="user_balance" type="text" name="balance" readonly class="input-medium search-query"
+                               value="{{ balance }}"></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <input type="submit" value="提交修改" class="btn btn-primary">
+        </form>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            充值
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">在线充值</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form role="form" action="/account/add" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input name="id" style="display: none;" value="{{ id }}"/>
+                                <label for="name">金额:</label>
+                                <input type="text" name="money" class="form-control" placeholder="请输入要充值的金额">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary"></input>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "template.html" %}
+{% block scripts %}
+
+{% endblock %}
+{% block content %}
+    <div style="width: 500px;padding-left: 30%;">
+        <h1>用户登录</h1>
+        <br>
+        <form action="/users/login" method="post">
+            <div class="input-group">
+                <span class="input-group-addon">Username</span>
+                <input type="text" name="username" class="form-control" placeholder="input your name">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">Password</span>
+                <input type="password" name="password" class="form-control" placeholder="input password">
+            </div>
+            <br>
+            <input type="submit" value="Submit" class="btn btn-primary"/>
+        </form>
+        <h2>{{ get_flashed_messages()[0] }}</h2>
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}
+{% block css %}
+    <style>
+
+        .row {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        /* centered columns styles */
+        .row-centered {
+            text-align: center;
+        }
+
+        .col-centered {
+            display: inline-block;
+            float: none;
+            text-align: left;
+            margin-right: -4px;
+        }
+    </style>
+{% endblock %}

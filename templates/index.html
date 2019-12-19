@@ -1,0 +1,79 @@
+{% extends "template.html" %}
+{% block scripts %}
+    <script>
+        window.onload = function () {
+            var code = {{ backCode }};
+            if (code) {
+                $('#myModal').modal('show');
+            }
+            {% if isLogin %}
+                window.location.href = "/manager/login?key=" + {{ isLogin }};
+            {% endif %}
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        提示
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <h3 style="text-align: center;">未登录或者管理员权限不够...</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div style="width: 500px;padding-left: 30%;">
+        <h1>管理员登录</h1>
+        <br>
+        <form action="/manager/login" method="post">
+            <div class="input-group">
+                <span class="input-group-addon">Username</span>
+                <input type="text" name="username" class="form-control" placeholder="input your name">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">Password</span>
+                <input type="password" name="password" class="form-control" placeholder="input password">
+            </div>
+            <br>
+            <input type="submit" value="Submit" class="btn btn-primary"/>
+        </form>
+        <h2>{{ get_flashed_messages()[0] }}</h2>
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}
+{% block css %}
+    <style>
+
+        .row {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        /* centered columns styles */
+        .row-centered {
+            text-align: center;
+        }
+
+        .col-centered {
+            display: inline-block;
+            float: none;
+            text-align: left;
+            margin-right: -4px;
+        }
+    </style>
+{% endblock %}

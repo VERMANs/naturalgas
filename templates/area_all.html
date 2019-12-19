@@ -1,0 +1,84 @@
+{% extends "template.html" %}
+{% block scripts %}
+    <script>
+        window.onload = function () {
+            var code = {{ backCode }};
+            if (code == 404) {
+                $('#myModal').modal('show');
+            }
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        提示
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <h3 style="text-align: center;">没有查到该地区相关信息，请核查后重试...</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <form action="/search/area" method="post">
+        <input type="text" class="form-horizontal" name="search" placeholder="input area's name you want..."
+               aria-label="Recipient's username"
+               aria-describedby="basic-addon2">
+        <input class="btn btn-sm" type="submit" value="search"/>
+    </form>
+    <h2 style="text-align: center;">全国地区天然气气费表</h2>
+    <table class="table table-striped">
+        <caption>用户信息</caption>
+        <thead>
+        <tr>
+            <td>地区名</td>
+            <td>气费</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for area in areas %}
+            <form action="/area/change" method="post">
+                <tr style="display: none;">
+                    <td>
+                        <input name="id" type="text" value="{{ id }}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ area.name }}</td>
+                    <td><input id="'gasprice_'+'{{ area.id }}'" type="text" name="name"
+                               class="input-medium search-query"
+                               disabled value="{{ area.gasprice }}"></td>
+                    <td>
+                        <input type="button" onclick="location.href='/area/one?area_id='+{{ area.id }}"
+                               class="btn btn-info" value="查看详情"/>
+                        {% if area.is_used == '1' %}
+                            <button type="button" class="btn btn-danger"
+                                    onclick="location.href='/area/stop?page=all&is_used=0&area_id='+{{ area.id }}">
+                                暂停服务
+                            </button>
+                        {% else %}
+                            <button type="button" class="btn btn-info"
+                                    onclick="location.href='/area/stop?page=all&is_used=1&area_id='+{{ area.id }}">
+                                启动服务
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+            </form>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
